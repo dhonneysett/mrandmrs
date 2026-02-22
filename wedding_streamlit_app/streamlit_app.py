@@ -6,6 +6,22 @@ import secrets
 import string
 import pathlib
 
+# ============================================================
+# IMPORTANT PATH FIX (for Streamlit Cloud + subfolders)
+# This makes file loading work even when the app is in a folder
+# like /wedding_streamlit_app/ inside your GitHub repo.
+# ============================================================
+BASE_DIR = pathlib.Path(__file__).resolve().parent
+GUESTS_PATH = BASE_DIR / "guests.csv"
+ASSETS_DIR = BASE_DIR / "assets"
+
+# Local CSV storage (OK for testing; not reliable long-term on Streamlit Cloud)
+DATA_DIR = BASE_DIR / "data"
+DATA_DIR.mkdir(exist_ok=True)
+
+RSVP_PATH = DATA_DIR / "rsvps.csv"
+PLEDGE_PATH = DATA_DIR / "pledges.csv"
+
 # ----------------------------
 # CONFIG (edit these)
 # ----------------------------
@@ -32,24 +48,17 @@ ROUTE_AREAS = [
 ]
 
 TOKENS = [
-    {"key":"fuel", "label":"Fuel for the Long Haul ⛽", "default_amount":500, "min_amount":0, "max_amount":500, "help":"Help us survive the long stretches."},
-    {"key":"nest", "label":"A Night’s Nest 🛏️", "default_amount":1300, "min_amount":0, "max_amount":1300, "help":"A cosy stop somewhere on the route."},
-    {"key":"datenight", "label":"Date Night 🍷", "default_amount":700, "min_amount":0, "max_amount":700, "help":"Dinner somewhere special."},
-    {"key":"experience", "label":"Experience Token 🌄", "default_amount":1500, "min_amount":0, "max_amount":1500, "help":"An activity, a tour, a tasting, a view."},
-    {"key":"padkos", "label":"Padkos & Coffee ☕🥪", "default_amount":150, "min_amount":0, "max_amount":150, "help":"Roadtrip fuel (the snack kind)."},
-    {"key":"detour", "label":"Detour Token 🗺️", "default_amount":0, "min_amount":0, "max_amount":2500, "help":"Name the detour. Set the amount. Cause chaos (nicely)."},
+    {"key": "fuel", "label": "Fuel for the Long Haul ⛽", "default_amount": 500, "min_amount": 0, "max_amount": 500, "help": "Help us survive the long stretches."},
+    {"key": "nest", "label": "A Night’s Nest 🛏️", "default_amount": 1300, "min_amount": 0, "max_amount": 1300, "help": "A cosy stop somewhere on the route."},
+    {"key": "datenight", "label": "Date Night 🍷", "default_amount": 700, "min_amount": 0, "max_amount": 700, "help": "Dinner somewhere special."},
+    {"key": "experience", "label": "Experience Token 🌄", "default_amount": 1500, "min_amount": 0, "max_amount": 1500, "help": "An activity, a tour, a tasting, a view."},
+    {"key": "padkos", "label": "Padkos & Coffee ☕🥪", "default_amount": 150, "min_amount": 0, "max_amount": 150, "help": "Roadtrip fuel (the snack kind)."},
+    {"key": "detour", "label": "Detour Token 🗺️", "default_amount": 0, "min_amount": 0, "max_amount": 2500, "help": "Name the detour. Set the amount. Cause chaos (nicely)."},
 ]
 
 # ----------------------------
-# Storage (foundation)
-# NOTE: local writes are for testing only.
-# Before sending real invites, wire up Google Sheets or Supabase.
+# Storage helpers
 # ----------------------------
-DATA_DIR = pathlib.Path("data")
-DATA_DIR.mkdir(exist_ok=True)
-RSVP_PATH = DATA_DIR / "rsvps.csv"
-PLEDGE_PATH = DATA_DIR / "pledges.csv"
-
 def _append_row(path: pathlib.Path, row: dict):
     df = pd.DataFrame([row])
     if path.exists():
@@ -58,7 +67,12 @@ def _append_row(path: pathlib.Path, row: dict):
         df.to_csv(path, mode="w", header=True, index=False)
 
 def load_guests() -> pd.DataFrame:
-    return pd.read_csv("guests.csv", dtype={"invite_code":str})
+    if not GUESTS_PATH.exists():
+        st.error("Setup issue: guests.csv not found.")
+        st.info("Fix: ensure guests.csv is committed to GitHub in the SAME folder as streamlit_app.py.")
+        st.caption(f"Expected path: {GUESTS_PATH}")
+        st.stop()
+    return pd.read_csv(GUESTS_PATH, dtype={"invite_code": str})
 
 def now_iso() -> str:
     return datetime.now().isoformat(timespec="seconds")
@@ -92,7 +106,7 @@ def get_guest_by_code(code: str) -> Guest | None:
         party_size_min=int(r["party_size_min"]),
         party_size_max=int(r["party_size_max"]),
         plus_one_allowed=bool(r["plus_one_allowed"]),
-        notes=str(r.get("notes","")),
+        notes=str(r.get("notes", "")),
     )
 
 def rsvp_open() -> bool:
@@ -114,16 +128,21 @@ def page_header(guest: Guest | None):
     if guest:
         st.write("")
         st.success(f"Hello **{guest.party_label}** ✨")
-    else:
-        st.write("")
 
 def require_code() -> str:
     qp = st.query_params
     code = (qp.get("code", "") or "").strip().upper()
     if code:
         return code
+
     st.info("Paste your invite code to continue 👇")
-    return (st.text_input("Invite code", placeholder="e.g., AB12CD34").strip().upper())
+    code = st.text_input("Invite code", placeholder="e.g., AB12CD34").strip().upper()
+
+    # If no code entered yet, stop here so we don't show an error prematurely.
+    if not code:
+        st.stop()
+
+    return code
 
 # ----------------------------
 # Pages
@@ -131,17 +150,16 @@ def require_code() -> str:
 def page_rsvp(guest: Guest):
     st.subheader("RSVP (the cheeky version)")
 
-    # Show inspiration image (optional)
     with st.expander("See the vibe we’re going for (inspiration)"):
-        try:
-            st.image("assets/inspiration.png", caption="Flow-chart energy ✅", use_container_width=True)
-        except Exception:
+        img_path = ASSETS_DIR / "inspiration.png"
+        if img_path.exists():
+            st.image(str(img_path), caption="Flow-chart energy ✅", use_container_width=True)
+        else:
             st.caption("Add an inspiration image at assets/inspiration.png")
 
     st.write("**Question:** Are you free on the day? 😌")
 
     col1, col2, col3 = st.columns(3)
-    picked = st.session_state.get("picked", False)
 
     with col1:
         if st.button("Yes, obviously 🥂", use_container_width=True):
@@ -164,11 +182,9 @@ def page_rsvp(guest: Guest):
         st.info("You can still leave a message and/or sponsor a honeymoon moment in the sidebar.")
         return
 
-    # RSVP form
     with st.form("rsvp_form", clear_on_submit=False):
         attending = st.radio("Will you be joining us?", ["Yes 🎉", "No 😢"], horizontal=True)
 
-        # attendee count logic
         if guest.party_size_min == guest.party_size_max:
             st.caption(f"Seats reserved for you: **{guest.party_size_max}**")
             attendee_count = guest.party_size_max
@@ -224,15 +240,12 @@ def page_honeymoon(guest: Guest):
     )
 
     st.write("**Route (rough plan):** Howick → Clarens/Fouriesburg → Kimberley → Upington/Augrabies → West Coast → Oudtshoorn/George → Grahamstown → home-ish")
-
     st.write("---")
 
     token_label_to_obj = {t["label"]: t for t in TOKENS}
     token_choice = st.selectbox("Pick a token", options=[t["label"] for t in TOKENS])
-
     token = token_label_to_obj[token_choice]
 
-    # Amount
     if token["key"] == "detour":
         amount = st.number_input("Choose an amount (R0–R2500)", min_value=token["min_amount"], max_value=token["max_amount"], value=0, step=50)
     else:
@@ -277,7 +290,6 @@ def page_admin():
     st.subheader("Admin Dashboard")
     st.caption("Password required.")
 
-    admin_pw = None
     try:
         admin_pw = st.secrets.get("ADMIN_PASSWORD", None)
     except Exception:
@@ -285,8 +297,8 @@ def page_admin():
 
     if not admin_pw:
         st.error("ADMIN_PASSWORD is not set in Streamlit secrets.")
-        st.code("Add ADMIN_PASSWORD to .streamlit/secrets.toml (see secrets.example.toml)")
-        return
+        st.caption("Add ADMIN_PASSWORD in Streamlit Cloud → App settings → Secrets.")
+        st.stop()
 
     pw = st.text_input("Admin password", type="password")
     if pw != admin_pw:
@@ -294,7 +306,6 @@ def page_admin():
 
     st.success("Welcome, admin ✅")
 
-    # RSVPs
     st.write("### RSVPs")
     if RSVP_PATH.exists():
         rsvps = pd.read_csv(RSVP_PATH)
@@ -321,13 +332,11 @@ def page_admin():
 
     st.write("---")
 
-    # Pledges
     st.write("### Honeymoon Tokens / Pledges")
     if PLEDGE_PATH.exists():
         pledges = pd.read_csv(PLEDGE_PATH)
         st.dataframe(pledges, use_container_width=True, hide_index=True)
 
-        # Totals (not publicly shown)
         totals = pledges.groupby("token")["amount"].sum().reset_index().sort_values("amount", ascending=False)
         st.write("**Totals by token**")
         st.dataframe(totals, use_container_width=True, hide_index=True)
@@ -357,7 +366,6 @@ if not guest:
 
 page_header(guest)
 
-# Navigation
 st.sidebar.title("Menu")
 page = st.sidebar.radio("Go to", ["RSVP", "Wedding Details", "Honeymoon", "Admin"], index=0)
 
