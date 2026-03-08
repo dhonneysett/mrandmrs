@@ -1,0 +1,6 @@
+# Add these TWO lines to the bottom of wedding_streamlit_app/guests.csv
+# (Only if you want dedicated test codes for yourselves.)
+
+invite_code,party_label,party_size_min,party_size_max,plus_one_allowed,notes
+DAMIAN26,Damian (Groom - test),1,1,False,Test RSVP
+MEGAN026,Megan (Bride - test),1,1,False,Test RSVP
