@@ -16,11 +16,11 @@ footer {visibility: hidden;}
 
 .block-container{
   max-width: 980px;
-  padding-top: 2.3rem;
+  padding-top: 2.1rem;
   padding-bottom: 4rem;
 }
 
-/* premium cards */
+/* Premium cards */
 .dm-card{
   border: 1px solid rgba(0,0,0,.08);
   border-radius: 22px;
@@ -33,31 +33,49 @@ footer {visibility: hidden;}
 .dm-muted{ opacity:.78; }
 .dm-small{ opacity:.78; font-size:.92rem; }
 
-/* buttons */
+/* Buttons */
 .stButton > button{
   border-radius: 16px !important;
-  padding: .7rem 1.0rem !important;
+  padding: .75rem 1rem !important;
   border: 1px solid rgba(0,0,0,.10) !important;
   box-shadow: 0 6px 18px rgba(0,0,0,.05);
 }
 
+/* Primary CTA (sage) */
 .dm-cta .stButton > button{
   background: var(--sage) !important;
   color: var(--charcoal) !important;
 }
+
+/* Secondary CTA (sunflower) */
 .dm-cta2 .stButton > button{
   background: var(--sunflower) !important;
   color: var(--charcoal) !important;
 }
 
-/* inputs */
+/* Danger CTA */
+.dm-danger .stButton > button{
+  background: #F2D7D5 !important;
+  color: var(--charcoal) !important;
+}
+
+/* Inputs */
 input, textarea{
   border-radius: 14px !important;
 }
 
-/* sidebar subtle */
+/* Sidebar */
 [data-testid="stSidebar"]{
   border-right: 1px solid rgba(0,0,0,.06);
   background: rgba(255,255,255,.85);
   backdrop-filter: blur(6px);
+}
+
+/* Registry tile card “backing” */
+.dm-tile{
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 18px;
+  padding: 14px 14px;
+  background: rgba(255,255,255,.92);
+  box-shadow: 0 8px 22px rgba(0,0,0,.05);
 }
