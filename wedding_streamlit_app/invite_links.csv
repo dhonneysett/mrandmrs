@@ -1,6 +1,6 @@
 party_label,invite_code,invite_link_template
 Lisa (Mom of Groom),Z6YY8JZG,https://YOUR-STREAMLIT-APP-URL/?code=Z6YY8JZG
-Seun (Partner of Mom),P3LB8VEC,https://YOUR-STREAMLIT-APP-URL/?code=P3LB8VEC
+Seun,P3LB8VEC,https://YOUR-STREAMLIT-APP-URL/?code=P3LB8VEC
 David (Dad of Groom),LEOB20MX,https://YOUR-STREAMLIT-APP-URL/?code=LEOB20MX
 Sue (Mom of Bride),G2S3FVC8,https://YOUR-STREAMLIT-APP-URL/?code=G2S3FVC8
 Ann,KFZ6A2EA,https://YOUR-STREAMLIT-APP-URL/?code=KFZ6A2EA
@@ -28,3 +28,4 @@ Janice & Doug,V75RZ6IV,https://YOUR-STREAMLIT-APP-URL/?code=V75RZ6IV
 Clyde & Nici,WZQX6DVT,https://YOUR-STREAMLIT-APP-URL/?code=WZQX6DVT
 Cheryl & Guy,A91M7LJF,https://YOUR-STREAMLIT-APP-URL/?code=A91M7LJF
 Gina (+1 allowed),S28ARDDI,https://YOUR-STREAMLIT-APP-URL/?code=S28ARDDI
+
