@@ -1,7 +1,7 @@
 [theme]
 base="light"
-primaryColor="#7C4D7C"              # soft lavender
+primaryColor="#AFC8B3"
 backgroundColor="#FFFFFF"
-secondaryBackgroundColor="#F7F2EA"  # warm cream
+secondaryBackgroundColor="#F7F2EA"
 textColor="#2B2B2B"
 font="serif"
