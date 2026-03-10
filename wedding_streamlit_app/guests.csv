@@ -1,6 +1,6 @@
 invite_code,party_label,party_size_min,party_size_max,plus_one_allowed,notes
 Z6YY8JZG,Lisa (Mom of Groom),1,1,False,Separate RSVP from Seun.
-P3LB8VEC,Seun (Partner of Mom),1,1,False,Separate RSVP from Lisa.
+P3LB8VEC,Seun,1,1,False,Separate RSVP from Lisa.
 LEOB20MX,David (Dad of Groom),1,1,False,
 G2S3FVC8,Sue (Mom of Bride),1,1,False,
 KFZ6A2EA,Ann,1,1,False,No plus one.
@@ -30,3 +30,4 @@ A91M7LJF,Cheryl & Guy,2,2,False,
 S28ARDDI,Gina (+1 allowed),1,2,True,May bring a plus one.
 DAMIAN26,Damian (Groom - test),1,1,False,Test RSVP
 MEGAN026,Megan (Bride - test),1,1,False,Test RSVP
+
