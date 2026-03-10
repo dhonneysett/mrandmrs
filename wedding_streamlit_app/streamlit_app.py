@@ -186,7 +186,7 @@ class Guest:
     plus_one_allowed: bool
     notes: str
 
-@st.cache_data(show_spinner=False)
+@st.cache_data(show_spinner=False, ttl=30))
 def load_guests_df() -> pd.DataFrame:
     if not GUESTS_PATH.exists():
         raise FileNotFoundError(f"guests.csv not found at: {GUESTS_PATH}")
