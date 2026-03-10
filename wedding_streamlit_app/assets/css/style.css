@@ -3,36 +3,44 @@
   --cream: #F7F2EA;
   --sage: #AFC8B3;
   --sunflower: #FFDA03;
-  --soft-shadow: 0 10px 30px rgba(0,0,0,.06);
+  --shadow: 0 10px 30px rgba(0,0,0,.06);
 }
+
 #MainMenu {visibility: hidden;}
 header {visibility: hidden;}
 footer {visibility: hidden;}
+
 .stApp{
-  background: linear-gradient(180deg, rgba(247,242,234,1) 0%, rgba(255,255,255,1) 35%, rgba(223,245,227,0.55) 100%);
   color: var(--charcoal);
 }
+
 .block-container{
   max-width: 980px;
-  padding-top: 2.5rem;
+  padding-top: 2.3rem;
   padding-bottom: 4rem;
 }
+
+/* premium cards */
 .dm-card{
   border: 1px solid rgba(0,0,0,.08);
   border-radius: 22px;
   padding: 18px 18px;
-  background: rgba(255,255,255,.88);
-  box-shadow: var(--soft-shadow);
+  background: rgba(255,255,255,.90);
+  box-shadow: var(--shadow);
   backdrop-filter: blur(6px);
 }
+
 .dm-muted{ opacity:.78; }
-.dm-small{ opacity:.76; font-size:.9rem; }
+.dm-small{ opacity:.78; font-size:.92rem; }
+
+/* buttons */
 .stButton > button{
   border-radius: 16px !important;
   padding: .7rem 1.0rem !important;
   border: 1px solid rgba(0,0,0,.10) !important;
   box-shadow: 0 6px 18px rgba(0,0,0,.05);
 }
+
 .dm-cta .stButton > button{
   background: var(--sage) !important;
   color: var(--charcoal) !important;
@@ -41,9 +49,15 @@ footer {visibility: hidden;}
   background: var(--sunflower) !important;
   color: var(--charcoal) !important;
 }
+
+/* inputs */
 input, textarea{
   border-radius: 14px !important;
 }
+
+/* sidebar subtle */
 [data-testid="stSidebar"]{
   border-right: 1px solid rgba(0,0,0,.06);
+  background: rgba(255,255,255,.85);
+  backdrop-filter: blur(6px);
 }
