@@ -571,14 +571,24 @@ def bank_details_card(reference_code: Optional[str] = None):
     """)
 
 def page_registry(g: Guest):
-    st.subheader("Honneymoon registry — sponsor a moment")
-    storage_badge()
+    st.subheader("Honneymoon registry — sponsor a chapter of our road trip")
+storage_badge()
 
-    st.write(
-        "We don’t need traditional gifts (we already live together and have built a home). "
-        "If you’d like to spoil us, you can sponsor a little moment on our road trip honeymoon — "
-        "and leave a suggestion we’ll try to honour."
-    )
+card("""
+  <h3 style="margin:0">Our South African road trip honeymoon</h3>
+  <div class="dm-muted" style="margin-top:10px">
+    Rather than a traditional gift registry, we’re planning a road trip honeymoon through some of the places we’ve long wanted to explore together.
+    <br><br>
+    We’ll begin in the Midlands, then head to Clarens and Fouriesburg for cherry country, hiking, mountain air and the odd beer tasting.
+    From there we’ll travel on through Kimberley, Upington and Augrabies for a mix of history, big skies, dramatic scenery and a proper nature reset.
+    <br><br>
+    We then hope to make our way to the West Coast for beaches, seafood, wine and all the food experiences we can justify as “essential”.
+    After that, Cape Town may call us in for a little theatre and city energy, before we head along the Garden Route toward Oudtshoorn for adventure, history and a few beautiful detours.
+    <br><br>
+    So instead of traditional gifts, you’re welcome to sponsor a little chapter of the journey — fuel for the long stretches, a night’s stay, a date night, an experience, or even a wildcard detour.
+    We love the idea that different parts of the trip will remind us of the people who helped send us there.
+  </div>
+""")
 
     st.write("---")
 
