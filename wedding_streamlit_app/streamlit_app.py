@@ -36,9 +36,9 @@ RSVP_DEADLINE = date(2026, 4, 15)
 VENUE_NAME = "Sugar Baron Craft Distillery"
 VENUE_MAP_LINK = "https://share.google/eDwOEY9LEIYKsZOR3"
 START_TIME_TEXT = "Guests arrive from 14:30 for a 15:00 ceremony (till late)"
-DRESS_CODE = "Garden Party ðŸŒ¿"
-ACCOMMODATION_NOTE = "The Oaks Hotel, Richmond â€” 033 212 2603"
-RULES_NOTE = "No children â€¢ No plus ones unless your invite says so"
+DRESS_CODE = "Garden Party 🌿"
+ACCOMMODATION_NOTE = "The Oaks Hotel, Richmond — 033 212 2603"
+RULES_NOTE = "No children • No plus ones unless your invite says so"
 
 ROUTE_AREAS = [
     "Howick / Midlands",
@@ -67,42 +67,42 @@ BANK_REFERENCE_NOTE = "Use the generated reference code"
 TOKENS = [
     {
         "key": "fuel",
-        "label": "Fuel for the Long Haul â›½",
+        "label": "Fuel for the Long Haul ⛽",
         "default_amount": 500,
         "max_amount": 500,
         "desc": "For the long stretches between towns, mountains and coastlines."
     },
     {
         "key": "nest",
-        "label": "A Nightâ€™s Nest ðŸ›ï¸",
+        "label": "A Night’s Nest 🛏️",
         "default_amount": 1300,
         "max_amount": 1300,
         "desc": "A cosy stay somewhere along the journey."
     },
     {
         "key": "datenight",
-        "label": "Date Night ðŸ·",
+        "label": "Date Night 🍷",
         "default_amount": 700,
         "max_amount": 700,
         "desc": "Dinner, drinks, a little romance and a good story to tell."
     },
     {
         "key": "experience",
-        "label": "Experience Token ðŸŒ„",
+        "label": "Experience Token 🌄",
         "default_amount": 1500,
         "max_amount": 1500,
         "desc": "For tastings, hikes, theatre, tours and beautiful detours."
     },
     {
         "key": "padkos",
-        "label": "Padkos & Coffee â˜•ðŸ¥ª",
+        "label": "Padkos & Coffee ☕🥪",
         "default_amount": 150,
         "max_amount": 150,
         "desc": "Road trip essentials: snacks, coffee and the odd petrol station treat."
     },
     {
         "key": "detour",
-        "label": "Detour Token ðŸ—ºï¸",
+        "label": "Detour Token 🗺️",
         "default_amount": 0,
         "max_amount": 2500,
         "desc": "Choose the amount, suggest the stop, and send us somewhere memorable."
@@ -203,9 +203,9 @@ def rsvp_open() -> bool:
 
 def storage_badge():
     if STORAGE_MODE == "apps_script":
-        st.caption("Storage: Google Sheets âœ…")
+        st.caption("Storage: Google Sheets ✅")
     else:
-        st.caption("Storage: Local CSV (testing mode) âš ï¸")
+        st.caption("Storage: Local CSV (testing mode) ⚠️")
 
 # =========================
 # Guests
@@ -362,7 +362,7 @@ def build_invoice_pdf(guest_label: str, reference: str, cart_items: List[Dict[st
     c.drawString(
         50,
         y,
-        "Thank you ðŸ¤ Weâ€™ll send you a pic when we use your sponsored moment (if you asked for one).",
+        "Thank you 🤍 We’ll send you a pic when we use your sponsored moment (if you asked for one).",
     )
 
     c.showPage()
@@ -393,7 +393,7 @@ def nav_row(show_admin: bool = True):
 # =========================
 def page_login():
     card(f'''
-      <div class="dm-muted">Youâ€™ve cracked an invite to the wedding of</div>
+      <div class="dm-muted">You’ve cracked an invite to the wedding of</div>
       <h2 style="margin:6px 0 4px 0">{COUPLE_NAMES}</h2>
       <div class="dm-muted">Enter your unique code to continue.</div>
     ''')
@@ -407,13 +407,13 @@ def page_login():
     ).strip().upper()
 
     st.markdown("<div class='dm-cta'>", unsafe_allow_html=True)
-    enter = st.button("Dare to enter ðŸ’", use_container_width=True)
+    enter = st.button("Dare to enter 💍", use_container_width=True)
     st.markdown("</div>", unsafe_allow_html=True)
 
     if enter:
         g = guest_by_code(code)
         if not g:
-            st.error("That code doesnâ€™t look right ðŸ˜… Try again, or message us if youâ€™re stuck.")
+            st.error("That code doesn’t look right 😅 Try again, or message us if you’re stuck.")
             return
         st.session_state["guest_code"] = g.invite_code
         st.query_params["code"] = g.invite_code
@@ -426,13 +426,13 @@ def header_card(g: Guest):
     reserved = (
         g.party_size_max
         if g.party_size_min == g.party_size_max
-        else f"{g.party_size_min}â€“{g.party_size_max}"
+        else f"{g.party_size_min}–{g.party_size_max}"
     )
     card(f'''
       <div class="dm-muted">Welcome</div>
-      <h2 style="margin:6px 0 2px 0">{g.party_label} âœ¨</h2>
+      <h2 style="margin:6px 0 2px 0">{g.party_label} ✨</h2>
       <div class="dm-muted" style="margin-top:6px">
-        <b>{WEDDING_DATE.strftime('%A, %d %B %Y')}</b> â€¢ {VENUE_NAME} â€¢ {START_TIME_TEXT}
+        <b>{WEDDING_DATE.strftime('%A, %d %B %Y')}</b> • {VENUE_NAME} • {START_TIME_TEXT}
       </div>
       <div class="dm-small" style="margin-top:6px">{RULES_NOTE}</div>
       <div class="dm-small" style="margin-top:6px">Seats reserved: <b>{reserved}</b></div>
@@ -443,7 +443,7 @@ def page_details():
     st.write(f"**Date:** {WEDDING_DATE.strftime('%A, %d %B %Y')}")
     st.write(f"**Time:** {START_TIME_TEXT}")
     st.write(f"**Venue:** {VENUE_NAME}")
-    st.link_button("Open map ðŸ“", VENUE_MAP_LINK, use_container_width=True)
+    st.link_button("Open map 📍", VENUE_MAP_LINK, use_container_width=True)
     st.write(f"**Dress code:** {DRESS_CODE}")
     st.write(f"**Accommodation:** {ACCOMMODATION_NOTE}")
     st.write(f"**Rules:** {RULES_NOTE}")
@@ -455,7 +455,7 @@ def page_rsvp(g: Guest):
     if not rsvp_open():
         st.warning(
             f"RSVPs closed on {RSVP_DEADLINE.strftime('%d %B %Y')}. "
-            "If youâ€™re late, please message us directly."
+            "If you’re late, please message us directly."
         )
         return
 
@@ -464,18 +464,18 @@ def page_rsvp(g: Guest):
     step = st.session_state["rsvp_step"]
 
     if st.session_state.get("rsvp_done", False):
-        st.success("RSVP received ðŸ¤")
+        st.success("RSVP received 🤍")
         st.snow()
         c1, c2 = st.columns(2)
         with c1:
             st.markdown("<div class='dm-cta'>", unsafe_allow_html=True)
-            if st.button("Wedding details â†’", use_container_width=True):
+            if st.button("Wedding details →", use_container_width=True):
                 st.session_state["rsvp_done"] = False
                 set_page("Wedding details")
             st.markdown("</div>", unsafe_allow_html=True)
         with c2:
             st.markdown("<div class='dm-cta2'>", unsafe_allow_html=True)
-            if st.button("Honneymoon (Gift Registry) â†’", use_container_width=True):
+            if st.button("Honneymoon (Gift Registry) →", use_container_width=True):
                 st.session_state["rsvp_done"] = False
                 set_page("Honneymoon")
             st.markdown("</div>", unsafe_allow_html=True)
@@ -484,18 +484,18 @@ def page_rsvp(g: Guest):
     if step == 0:
         card(
             f"<h3 style='margin:0'>Are you available on {WEDDING_DATE.strftime('%d %B %Y')}?</h3>"
-            "<div class='dm-muted'>Be carefulâ€¦ your answers will be used against you ðŸ˜Œ</div>"
+            "<div class='dm-muted'>Be careful… your answers will be used against you 😌</div>"
         )
         c1, c2, c3 = st.columns(3)
-        if c1.button("Yes, of course âœ…", use_container_width=True):
+        if c1.button("Yes, of course ✅", use_container_width=True):
             st.session_state["journey"] = ["yes"]
             st.session_state["rsvp_step"] = 3
             st.rerun()
-        if c2.button("Maybeâ€¦ I want to see where this goes ðŸ‘€", use_container_width=True):
+        if c2.button("Maybe… I want to see where this goes 👀", use_container_width=True):
             st.session_state["journey"] = ["maybe"]
             st.session_state["rsvp_step"] = 1
             st.rerun()
-        if c3.button("Noâ€¦ but I know Iâ€™ll be missing out ðŸ˜­", use_container_width=True):
+        if c3.button("No… but I know I’ll be missing out 😭", use_container_width=True):
             st.session_state["journey"] = ["no"]
             st.session_state["rsvp_step"] = 1
             st.rerun()
@@ -503,15 +503,15 @@ def page_rsvp(g: Guest):
 
     if step == 1:
         card(
-            "<h3 style='margin:0'>Quick questionâ€¦ do you like free food and drinks?</h3>"
+            "<h3 style='margin:0'>Quick question… do you like free food and drinks?</h3>"
             "<div class='dm-muted'>Because we have some news for you.</div>"
         )
         c1, c2 = st.columns(2)
-        if c1.button("Yes ðŸ˜Œ", use_container_width=True):
+        if c1.button("Yes 😌", use_container_width=True):
             st.session_state["journey"].append("free_food_yes")
             st.session_state["rsvp_step"] = 2
             st.rerun()
-        if c2.button("No (liar) ðŸ˜…", use_container_width=True):
+        if c2.button("No (liar) 😅", use_container_width=True):
             st.session_state["journey"].append("free_food_no")
             st.session_state["rsvp_step"] = 2
             st.rerun()
@@ -520,18 +520,18 @@ def page_rsvp(g: Guest):
     if step == 2:
         card(
             "<h3 style='margin:0'>Are your plans REALLY that important?</h3>"
-            "<div class='dm-muted'>We can pretend they areâ€¦ but letâ€™s be honest.</div>"
+            "<div class='dm-muted'>We can pretend they are… but let’s be honest.</div>"
         )
         c1, c2, c3 = st.columns(3)
-        if c1.button("Not really ðŸ˜Œ", use_container_width=True):
+        if c1.button("Not really 😌", use_container_width=True):
             st.session_state["journey"].append("plans_not_really")
             st.session_state["rsvp_step"] = 3
             st.rerun()
-        if c2.button("Kind ofâ€¦", use_container_width=True):
+        if c2.button("Kind of…", use_container_width=True):
             st.session_state["journey"].append("plans_kind_of")
             st.session_state["rsvp_step"] = 3
             st.rerun()
-        if c3.button("Yes (but Iâ€™ll still come) ðŸ¤", use_container_width=True):
+        if c3.button("Yes (but I’ll still come) 🤝", use_container_width=True):
             st.session_state["journey"].append("plans_yes_but")
             st.session_state["rsvp_step"] = 3
             st.rerun()
@@ -541,25 +541,25 @@ def page_rsvp(g: Guest):
         reserved = (
             g.party_size_max
             if g.party_size_min == g.party_size_max
-            else f"{g.party_size_min}â€“{g.party_size_max}"
+            else f"{g.party_size_min}–{g.party_size_max}"
         )
         card(
-            f"<h3 style='margin:0'>Final answerâ€¦</h3>"
-            f"<div class='dm-muted'>Seats reserved: <b>{reserved}</b> â€¢ {RULES_NOTE}</div>"
+            f"<h3 style='margin:0'>Final answer…</h3>"
+            f"<div class='dm-muted'>Seats reserved: <b>{reserved}</b> • {RULES_NOTE}</div>"
         )
         st.write("")
 
         c1, c2 = st.columns(2)
         with c1:
             st.markdown("<div class='dm-cta2'>", unsafe_allow_html=True)
-            if st.button("Yes â€” weâ€™ll be there ðŸŽ‰", use_container_width=True):
+            if st.button("Yes — we’ll be there 🎉", use_container_width=True):
                 st.session_state["rsvp_step"] = 4
                 st.rerun()
             st.markdown("</div>", unsafe_allow_html=True)
 
         with c2:
             st.markdown("<div class='dm-danger'>", unsafe_allow_html=True)
-            if st.button("No â€” sadly canâ€™t make it ðŸ˜¢", use_container_width=True):
+            if st.button("No — sadly can’t make it 😢", use_container_width=True):
                 try:
                     store_rsvp({
                         "timestamp": now_iso(),
@@ -573,7 +573,7 @@ def page_rsvp(g: Guest):
                         "message": "",
                         "journey": "|".join(st.session_state.get("journey", [])),
                     })
-                    st.toast("RSVP saved âœ…", icon="âœ…")
+                    st.toast("RSVP saved ✅", icon="✅")
                     st.session_state["rsvp_step"] = 0
                     st.session_state["rsvp_done"] = True
                     st.rerun()
@@ -604,16 +604,16 @@ def page_rsvp(g: Guest):
         )
         song = st.text_input(
             "Song request",
-            placeholder="One song that will get you on the dance floorâ€¦",
+            placeholder="One song that will get you on the dance floor…",
         )
         message = st.text_area(
             "Message to the couple",
             height=110,
-            placeholder="Anything you want to tell us ðŸ˜Š",
+            placeholder="Anything you want to tell us 😊",
         )
 
         st.markdown("<div class='dm-cta2'>", unsafe_allow_html=True)
-        submit = st.button("Confirm RSVP âœ…", use_container_width=True)
+        submit = st.button("Confirm RSVP ✅", use_container_width=True)
         st.markdown("</div>", unsafe_allow_html=True)
 
         if submit:
@@ -631,7 +631,7 @@ def page_rsvp(g: Guest):
                     "journey": "|".join(st.session_state.get("journey", [])),
                 })
                 st.balloons()
-                st.toast("RSVP saved âœ…", icon="âœ…")
+                st.toast("RSVP saved ✅", icon="✅")
                 st.session_state["rsvp_step"] = 0
                 st.session_state["rsvp_done"] = True
                 st.rerun()
@@ -658,38 +658,38 @@ def page_registry(g: Guest):
     storage_badge()
 
     card('''
-      <h3 style="margin:0">A small note on gifts ðŸ¤</h3>
+      <h3 style="margin:0">A small note on gifts 🤍</h3>
       <div class="dm-muted" style="margin-top:10px">
         Your presence at our wedding means the world to us, and truly is more than enough.
-        Weâ€™ve already built a home together and donâ€™t need traditional gifts.
+        We’ve already built a home together and don’t need traditional gifts.
         <br><br>
-        But if you really would like to give something, weâ€™d love for you to be part of our honeymoon instead â€”
-        by sponsoring a little moment along the road and helping shape the story weâ€™ll tell when we come home.
+        But if you really would like to give something, we’d love for you to be part of our honeymoon instead —
+        by sponsoring a little moment along the road and helping shape the story we’ll tell when we come home.
       </div>
     ''')
 
     card('''
       <h3 style="margin:0">Our South African road trip honeymoon</h3>
       <div class="dm-muted" style="margin-top:10px">
-        Weâ€™re planning to set off from Howick and the Midlands, heading through Bergville and on to Clarens and Fouriesburg
+        We’re planning to set off from Howick and the Midlands, heading through Bergville and on to Clarens and Fouriesburg
         for mountain air, hiking, cherry country and the odd beer tasting.
         <br><br>
-        From there weâ€™ll make our way via either the N8 or the N5 toward Kimberley, then onward to Upington and Augrabies
+        From there we’ll make our way via either the N8 or the N5 toward Kimberley, then onward to Upington and Augrabies
         by way of the N10 or N14 for a little history, big skies, desert beauty and proper South African scenery.
         <br><br>
         We then hope to follow the N14 toward the N7 and spend time along the West Coast for beaches, seafood, food experiences,
         wine and the slower charm of small coastal towns, before drifting down the back roads toward Cape Town for a little theatre,
         city energy and a different chapter of the trip.
         <br><br>
-        From Cape Town weâ€™re still deciding on the prettiest route through to Oudtshoorn and beyond, but the idea is to continue the
+        From Cape Town we’re still deciding on the prettiest route through to Oudtshoorn and beyond, but the idea is to continue the
         journey through the Garden Route and Klein Karoo for adventure, history, beautiful landscapes and a few memorable detours before home.
         <br><br>
-        So if youâ€™d like to gift something, rather sponsor a moment â€” fuel, a stay, a date night, coffee and padkos, an experience,
-        or even a wildcard detour â€” and in that way, become part of the journey with us.
+        So if you’d like to gift something, rather sponsor a moment — fuel, a stay, a date night, coffee and padkos, an experience,
+        or even a wildcard detour — and in that way, become part of the journey with us.
       </div>
     ''')
 
-    st.caption("Choose a moment youâ€™d like to be part of below âœ¨")
+    st.caption("Choose a moment you’d like to be part of below ✨")
     st.write("---")
 
     st.session_state.setdefault("cart", [])
@@ -703,7 +703,7 @@ def page_registry(g: Guest):
             st.caption(t["desc"])
             if st.button("Select", key=f"sel_{t['key']}", use_container_width=True):
                 st.session_state["selected_token_key"] = t["key"]
-                st.toast("Selected âœ…", icon="âœ…")
+                st.toast("Selected ✅", icon="✅")
             tile_box_end()
 
     token_key = st.session_state.get("selected_token_key")
@@ -719,7 +719,7 @@ def page_registry(g: Guest):
 
     if token["key"] == "detour":
         amount = st.number_input(
-            "Amount (R0â€“R2500)",
+            "Amount (R0–R2500)",
             min_value=0,
             max_value=token["max_amount"],
             value=0,
@@ -738,12 +738,12 @@ def page_registry(g: Guest):
     suggestion = st.text_area(
         "Suggestion",
         height=110,
-        placeholder="A place to stay, restaurant, viewpoint, hidden gemâ€¦",
+        placeholder="A place to stay, restaurant, viewpoint, hidden gem…",
     )
-    want_update = st.checkbox("Send me a pic when you use my token ðŸ“¸", value=True)
+    want_update = st.checkbox("Send me a pic when you use my token 📸", value=True)
 
     st.markdown("<div class='dm-cta'>", unsafe_allow_html=True)
-    add = st.button("Add to cart âž•", use_container_width=True)
+    add = st.button("Add to cart ➕", use_container_width=True)
     st.markdown("</div>", unsafe_allow_html=True)
 
     if add:
@@ -755,14 +755,14 @@ def page_registry(g: Guest):
             "suggestion": suggestion.strip(),
             "wants_update": bool(want_update),
         })
-        st.toast("Added to cart ðŸ›’", icon="ðŸ›’")
+        st.toast("Added to cart 🛒", icon="🛒")
 
     st.write("---")
     st.subheader("Your cart")
     cart = st.session_state.get("cart", [])
 
     if not cart:
-        st.info("Cart is empty â€” add a tile above.")
+        st.info("Cart is empty — add a tile above.")
         bank_details_card()
         return
 
@@ -771,20 +771,20 @@ def page_registry(g: Guest):
 
     for idx, item in enumerate(cart):
         with st.container(border=True):
-            st.write(f"**{item['token_label']}** â€” R {item['amount']}")
+            st.write(f"**{item['token_label']}** — R {item['amount']}")
             st.caption(
-                f"{item['area']}" + (f" â€¢ {item['suggestion']}" if item.get("suggestion") else "")
+                f"{item['area']}" + (f" • {item['suggestion']}" if item.get("suggestion") else "")
             )
             rm_cols = st.columns([1, 3])
             with rm_cols[0]:
                 if st.button("Remove", key=f"rm_{idx}", use_container_width=True):
                     st.session_state["cart"].pop(idx)
-                    st.toast("Removed ðŸ—‘ï¸", icon="ðŸ—‘ï¸")
+                    st.toast("Removed 🗑️", icon="🗑️")
                     st.rerun()
 
     st.write("")
     st.markdown("<div class='dm-cta2'>", unsafe_allow_html=True)
-    checkout = st.button("Generate reference code + invoice PDF â†’", use_container_width=True)
+    checkout = st.button("Generate reference code + invoice PDF →", use_container_width=True)
     st.markdown("</div>", unsafe_allow_html=True)
 
     if checkout:
@@ -805,7 +805,7 @@ def page_registry(g: Guest):
                 })
             st.balloons()
             st.snow()
-            st.success("Done! Hereâ€™s your reference code:")
+            st.success("Done! Here’s your reference code:")
             st.code(ref)
 
             pdf_bytes = build_invoice_pdf(g.party_label, ref, cart)
@@ -824,7 +824,7 @@ def page_registry(g: Guest):
 
         except Exception as e:
             st.error(f"Could not save to storage: {e}")
-            st.info("If you see this, your Google Sheets connection likely needs fixing (Admin â†’ Test connection).")
+            st.info("If you see this, your Google Sheets connection likely needs fixing (Admin → Test connection).")
             bank_details_card()
     else:
         bank_details_card()
@@ -841,7 +841,7 @@ def page_admin():
     if pw != ADMIN_PASSWORD:
         st.stop()
 
-    st.success("Welcome âœ…")
+    st.success("Welcome ✅")
 
     st.write("### Google Sheets connection test")
     if STORAGE_MODE != "apps_script":
@@ -852,7 +852,7 @@ def page_admin():
         if st.button("Test connection now", use_container_width=True):
             try:
                 res = _apps_post("ping", {"ts": now_iso()})
-                st.success(f"OK âœ… {res}")
+                st.success(f"OK ✅ {res}")
             except Exception as e:
                 st.error(f"Connection failed: {e}")
                 st.info("Check: /exec URL, token match, access = Anyone, and redeploy Apps Script.")
@@ -877,8 +877,8 @@ def page_admin():
 # App entry
 # =========================
 st.set_page_config(
-    page_title=f"{COUPLE_NAMES} â€” Wedding Invite",
-    page_icon="ðŸ’",
+    page_title=f"{COUPLE_NAMES} — Wedding Invite",
+    page_icon="💍",
     layout="centered",
 )
 load_css()
