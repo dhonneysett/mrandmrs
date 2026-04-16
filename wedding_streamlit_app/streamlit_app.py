@@ -32,6 +32,9 @@ PLEDGE_PATH = DATA_DIR / "pledges.csv"
 COUPLE_NAMES = "Damian & Megan"
 WEDDING_DATE = date(2026, 5, 30)
 RSVP_DEADLINE = date(2026, 4, 15)
+LATE_RSVP_EXCEPTIONS = {
+    "PARS2026": date(2026, 4, 20),
+}
 
 VENUE_NAME = "Sugar Baron Craft Distillery"
 VENUE_MAP_LINK = "https://share.google/eDwOEY9LEIYKsZOR3"
@@ -198,8 +201,19 @@ def make_ref(prefix: str = "DMHM") -> str:
     token = "".join(secrets.choice(alphabet) for _ in range(6))
     return f"{prefix}-{token}"
 
-def rsvp_open() -> bool:
-    return date.today() <= RSVP_DEADLINE
+def guest_rsvp_deadline(invite_code: str) -> date:
+    return LATE_RSVP_EXCEPTIONS.get(invite_code.strip().upper(), RSVP_DEADLINE)
+
+def rsvp_open(invite_code: str) -> bool:
+    return date.today() <= guest_rsvp_deadline(invite_code)
+
+def has_active_late_rsvp_exception(invite_code: str) -> bool:
+    code = invite_code.strip().upper()
+    return (
+        code in LATE_RSVP_EXCEPTIONS
+        and date.today() > RSVP_DEADLINE
+        and date.today() <= guest_rsvp_deadline(code)
+    )
 
 def storage_badge():
     if STORAGE_MODE == "apps_script":
@@ -452,11 +466,25 @@ def page_rsvp(g: Guest):
     st.subheader("RSVP")
     storage_badge()
 
-    if not rsvp_open():
-        st.warning(
-            f"RSVPs closed on {RSVP_DEADLINE.strftime('%d %B %Y')}. "
-            "If you’re late, please message us directly."
+    if has_active_late_rsvp_exception(g.invite_code):
+        special_deadline = guest_rsvp_deadline(g.invite_code)
+        st.info(
+            f"RSVPs are officially closed, but we made a special exception for you 🤍 "
+            f"Please RSVP by {special_deadline.strftime('%A %d %B %Y')}."
         )
+
+    if not rsvp_open(g.invite_code):
+        guest_deadline = guest_rsvp_deadline(g.invite_code)
+        if g.invite_code.strip().upper() in LATE_RSVP_EXCEPTIONS:
+            st.warning(
+                f"Your special RSVP extension closed on {guest_deadline.strftime('%A %d %B %Y')}. "
+                "Please message us directly if anything has changed."
+            )
+        else:
+            st.warning(
+                f"RSVPs closed on {RSVP_DEADLINE.strftime('%d %B %Y')}. "
+                "If you’re late, please message us directly."
+            )
         return
 
     st.session_state.setdefault("rsvp_step", 0)
@@ -895,7 +923,11 @@ if not guest:
 
 st.sidebar.title("Menu")
 st.sidebar.caption(guest.party_label)
-st.sidebar.caption(f"RSVP deadline: {RSVP_DEADLINE.strftime('%d %b %Y')}")
+sidebar_deadline = guest_rsvp_deadline(guest.invite_code)
+if has_active_late_rsvp_exception(guest.invite_code):
+    st.sidebar.caption(f"Special RSVP deadline for you: {sidebar_deadline.strftime('%d %b %Y')}")
+else:
+    st.sidebar.caption(f"RSVP deadline: {sidebar_deadline.strftime('%d %b %Y')}")
 
 if st.sidebar.button("Log out", use_container_width=True):
     for k in [
